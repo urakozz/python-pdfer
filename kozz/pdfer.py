@@ -13,8 +13,12 @@ class Pdfer:
     invalidFiles = []
     outfiles = []
 
-    def __init__(self, images, size=(1500, 1500)):
+    def __init__(self, *images):
+        if isinstance(images[0], list):
+            images = images[0]
         self.images = images
+
+    def setSize(self, size):
         self.size = size
 
     def compress(self):

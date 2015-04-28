@@ -4,12 +4,6 @@ __author__ = 'yury'
 
 
 def main():
-    tStr = "someStr"
-    print tStr
-
-    # squares = [1, 4, 9, 16]
-    size = (1500, 1500)
-    print size
 
     files = ['IMG_2129.JPG', 'IMG_20130911_0026.jpg', 'image-05.jpg', "README.md"]
 
