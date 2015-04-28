@@ -2,6 +2,7 @@ __author__ = 'yury'
 
 import uuid
 import os
+import img2pdf
 from PIL import Image
 from PIL import ImageEnhance
 
@@ -9,6 +10,7 @@ from PIL import ImageEnhance
 class Pdfer:
     images = []
     size = (1500, 1500)
+    invalidFiles = []
     outfiles = []
 
     def __init__(self, images, size=(1500, 1500)):
@@ -28,9 +30,25 @@ class Pdfer:
                 converted.save(outfile, 'JPEG', optimize=True, progressive=True)
                 self.outfiles.append(outfile)
             except IOError:
+                self.invalidFiles.append(filename)
                 pass
+        return self
+
+    def getPdfBytes(self):
+        bytes = img2pdf.convert(self.outfiles)
+        self.clearOutfiles()
+        return bytes
+
+    def getInvalidFiles(self):
+        return self.invalidFiles
+
+    def clearOutfiles(self):
+        for filename in self.outfiles:
+            os.remove(filename)
 
     def getTmpFileName(self, filename):
         fileNameSplit = os.path.splitext(filename)
         return "%s__%s.wb%s" % (fileNameSplit[0], uuid.uuid4().__str__(), fileNameSplit[1])
+
+
 
