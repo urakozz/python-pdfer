@@ -3,6 +3,7 @@ __author__ = 'yury'
 import uuid
 import os
 import img2pdf
+import threading
 from PIL import Image
 from PIL import ImageEnhance
 
@@ -22,21 +23,30 @@ class Pdfer:
         self.size = size
 
     def compress(self):
+        processStack = []
         for filename in self.images:
-            outfile = self.getTmpFileName(filename)
-            try:
-                image = Image.open(filename)
-                image.thumbnail(self.size)
-                converted = image.convert("L")
-                converted = ImageEnhance.Contrast(converted).enhance(1.1)
-                converted = ImageEnhance.Brightness(converted).enhance(1.1)
-                converted = ImageEnhance.Sharpness(converted).enhance(1.4)
-                converted.save(outfile, 'JPEG', optimize=True, progressive=True)
-                self.outfiles.append(outfile)
-            except IOError:
-                self.invalidFiles.append(filename)
-                pass
+            process = threading.Thread(target=self.processImage, args=[filename])
+            process.start()
+            processStack.append(process)
+        for process in processStack:
+            process.join()
         return self
+
+    def processImage(self, filename):
+        outfile = self.getTmpFileName(filename)
+        try:
+            print "started " + filename
+            image = Image.open(filename)
+            image.thumbnail(self.size)
+            converted = image.convert("L")
+            converted = ImageEnhance.Contrast(converted).enhance(1.1)
+            converted = ImageEnhance.Brightness(converted).enhance(1.1)
+            converted = ImageEnhance.Sharpness(converted).enhance(1.4)
+            converted.save(outfile, 'JPEG', optimize=True, progressive=True)
+            self.outfiles.append(outfile)
+        except IOError:
+            self.invalidFiles.append(filename)
+            pass
 
     def getPdfBytes(self):
         bytes = img2pdf.convert(self.outfiles)
@@ -47,8 +57,13 @@ class Pdfer:
         return self.invalidFiles
 
     def clearOutfiles(self):
+        threads = []
         for filename in self.outfiles:
-            os.remove(filename)
+            thread = threading.Thread(target=os.remove, args=[filename])
+            thread.start()
+            threads.append(thread)
+        for thread in threads:
+            thread.join()
 
     def getTmpFileName(self, filename):
         fileNameSplit = os.path.splitext(filename)
