@@ -35,7 +35,6 @@ class Pdfer:
     def processImage(self, filename):
         outfile = self.getTmpFileName(filename)
         try:
-            print "started " + filename
             image = Image.open(filename)
             image.thumbnail(self.size)
             converted = image.convert("L")
