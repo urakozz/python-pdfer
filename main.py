@@ -6,7 +6,7 @@ __author__ = 'yury'
 
 
 def run_pdfer():
-    files = ['IMG_2129.JPG', 'IMG_20130911_0026.jpg', 'image-05.jpg', "README.md"]
+    files = ['Scan_DiplomaRus.jpeg', 'Scan_RefLetter.jpeg', "IMG_2129.JPG", "README.md"]
 
     pdfer = Pdfer(files)
     pdfBytes = pdfer.compress().getPdfBytes()

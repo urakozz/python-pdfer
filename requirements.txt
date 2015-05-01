@@ -1,7 +1,7 @@
 ### Dependencies for Core Plotly Functionality  ###
 ###                                             ###
 ### To install, run:                            ###
-###      $ pip install -r requirements.txt      ###
+### $ env/bin/pip install -r requirements.txt   ###
 ###                                             ###
 ###################################################
 
@@ -19,3 +19,5 @@ simplejson==3.6.5
 
 img2pdf==0.1.5
 Pillow==2.6.1
+scikit-image==0.11.3
+scipy>=0.15.0
