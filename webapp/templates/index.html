@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<h1>Page View Report</h1>
+
+
+<ul>
+
+    {% for greeting in greetings %}
+    <li>{{ greeting.when }}</li>
+    {% endfor %}
+
+</ul>
+</body>
+</html>
