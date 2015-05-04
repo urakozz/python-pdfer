@@ -38,6 +38,7 @@ class IndexView(View):
         pdfer = Pdfer(files)
         pdfBytes = pdfer.compress().getPdfBytes()
         invalidFiles = pdfer.getInvalidFiles()
+        pdfer.removeOriginals().clearOutfiles()
 
         print invalidFiles
 
