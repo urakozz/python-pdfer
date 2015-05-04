@@ -90,7 +90,7 @@ class Pdfer:
                 yield filename
 
     def removeOriginals(self):
-        self._removeOriginalImages = False
+        self._removeOriginalImages = True
         return self
 
     def getTmpFileName(self, filename):

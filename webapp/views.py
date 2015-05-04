@@ -3,15 +3,15 @@ from kozz.pdfer import Pdfer
 import os
 from webapp.form.upload import UploadForm
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.views.generic import View
+from django.core.files.base import ContentFile
 from django.views.generic.edit import FormView
 from django.core.files.uploadedfile import SimpleUploadedFile
 
 
 # Create your views here.
 def index(request):
-    # return HttpResponse('Hello !')
     greetings = [{'when': "ta"}, {"when": "da"}]
     return render(request, 'index.html', {'greetings': greetings})
 
@@ -23,35 +23,25 @@ class IndexView(View):
         form = UploadForm()
         return render(request, 'index.html', {'greetings': greetings, 'form': form})
 
+
+class PdferView(View):
     def post(self, request):
         form = UploadForm(request.POST, request.FILES)
         if not form.is_valid():
-            return HttpResponse(form.errors.as_json())
+            return JsonResponse(form.errors)
 
-        files = []
-        for filename, file in request.FILES.iteritems():
-            name = request.FILES[filename].name
-            chunks = request.FILES[filename].chunks()
-            fname = self._handle_uploaded_file(chunks, name)
-            files.append(fname)
+        files = form.save()
 
         pdfer = Pdfer(files)
         pdfBytes = pdfer.compress().getPdfBytes()
         invalidFiles = pdfer.getInvalidFiles()
         pdfer.removeOriginals().clearOutfiles()
 
-        print invalidFiles
-
         filePdf = open("name.pdf", "wb")
         filePdf.write(pdfBytes)
         filePdf.close()
 
-        return HttpResponse(invalidFiles.__str__())
+        response = HttpResponse(pdfBytes, content_type='application/pdf')
+        response['Content-Disposition'] = 'attachment; filename="attach_compressed.pdf"'
 
-    def _handle_uploaded_file(self, f, name):
-        fileNameSplit = os.path.splitext(name)
-        fname = "%s.%s" % (uuid.uuid4().__str__(), fileNameSplit[1])
-        with open(fname, 'wb+') as destination:
-            for chunk in f:
-                destination.write(chunk)
-        return fname
+        return response
