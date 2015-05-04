@@ -71,6 +71,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'pdfer.wsgi.application'
+FILE_UPLOAD_MAX_MEMORY_SIZE = 30621440
 
 
 # Database

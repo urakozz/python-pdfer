@@ -19,6 +19,8 @@ class Pdfer:
     tmp_files = []
     outfiles = []
 
+    _removeOriginalImages = False
+
     def __init__(self, *images):
         if isinstance(images[0], list):
             images = images[0]
@@ -83,6 +85,13 @@ class Pdfer:
             yield filename
         for filename in self.tmp_files:
             yield filename
+        if self._removeOriginalImages:
+            for filename in self.images:
+                yield filename
+
+    def removeOriginals(self):
+        self._removeOriginalImages = False
+        return self
 
     def getTmpFileName(self, filename):
         fileNameSplit = os.path.splitext(filename)
