@@ -95,7 +95,7 @@ class Pdfer:
 
     def getTmpFileName(self, filename):
         fileNameSplit = os.path.splitext(filename)
-        return "%s__%s.wb%s.png" % (fileNameSplit[0], uuid.uuid4().__str__(), fileNameSplit[1])
+        return "%s.wb%s.png" % (fileNameSplit[0], fileNameSplit[1])
 
 
 
