@@ -1,6 +1,8 @@
 import uuid
+import sys
 from django.core.files.uploadedfile import InMemoryUploadedFile
 import os
+from StringIO import StringIO
 
 __author__ = 'yury'
 
@@ -15,23 +17,22 @@ class ProfileImage(models.Model):
 
 class UploadForm(forms.Form):
     attachments = MultiFileField(max_num=30, min_num=1, max_file_size=30621440)
-    somefiles = []
+    bufferFiles = []
 
-    def save(self, commit=True):
-
+    def save(self):
+        self.bufferFiles = []
         for each in self.cleaned_data['attachments']:
-            name = self._handle_uploaded_file(each)
-            self.somefiles.append(name)
-
-        return self.somefiles
+            buffer = self._handle_uploaded_file(each)
+            self.bufferFiles.append(buffer)
+            each.close()
+        return self.bufferFiles
 
     def _handle_uploaded_file(self, f):
         if not isinstance(f, InMemoryUploadedFile):
             raise Exception("invalid instance given")
-        fileNameSplit = os.path.splitext(f.name)
-        fname = "%s.tmp%s" % (uuid.uuid4().__str__(), fileNameSplit[1])
-        with open(fname, 'wb+') as destination:
-            for chunk in f.chunks():
-                destination.write(chunk)
-        return fname
+        output = StringIO()
+        for chunk in f.chunks():
+            output.write(chunk)
+        output.seek(0)
+        return output
 
