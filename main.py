@@ -1,19 +1,22 @@
 import time
 import threading
-import django
+import StringIO
 from kozz.pdfer import Pdfer
 
 __author__ = 'yury'
 
 
 def run_pdfer():
-    files = ['Scan_DiplomaRus.jpeg', 'Scan_RefLetter.jpeg', "IMG_2129.JPG", "README.md"]
+    files = ['Scan_DiplomaRus.jpeg', 'Scan_RefLetter.jpeg', "IMG_2129.JPG"]
+    streams = []
+    for file in files:
+        stream = StringIO.StringIO()
+        with open(file) as s:
+            stream.write(s.read())
+        streams.append(stream)
 
-    pdfer = Pdfer(files)
+    pdfer = Pdfer(streams)
     pdfBytes = pdfer.compress().getPdfBytes()
-    invalidFiles = pdfer.getInvalidFiles()
-
-    print invalidFiles
 
     filePdf = open("name.pdf", "wb")
     filePdf.write(pdfBytes)
@@ -21,8 +24,7 @@ def run_pdfer():
 
 
 def main():
-    print django.get_version();
-    exit(0);
+
     thr = threading.Thread(target=run_pdfer, args=(), kwargs={})
     thr.start()
 

@@ -17,11 +17,11 @@ from matplotlib.image import pil_to_array
 
 
 class Pdfer:
-    images = []
+    images = None
     size = (1500, 1500)
     invalidFiles = []
     tmp_files = []
-    outfiles = []
+    outfiles = None
 
     _dpi = 100
 
@@ -30,6 +30,8 @@ class Pdfer:
     def __init__(self, *images):
         if isinstance(images[0], list):
             images = images[0]
+        self.images = []
+        self.outfiles = []
         for buffer in images:
             self.addImage(buffer)
         plt.gray()
@@ -92,25 +94,8 @@ class Pdfer:
 
     def getPdfBytes(self):
         bytes = img2pdf.convert(self.outfiles)
-        # self.clearOutfiles()
         return bytes
 
-    def getInvalidFiles(self):
-        return self.invalidFiles
-
-
-    def toDelete(self):
-        for filename in self.outfiles:
-            yield filename
-        for filename in self.tmp_files:
-            yield filename
-        if self._removeOriginalImages:
-            for filename in self.images:
-                yield filename
-
-    def removeOriginals(self):
-        self._removeOriginalImages = True
-        return self
 
 
 
