@@ -14,6 +14,9 @@ from matplotlib.backends.backend_agg import FigureCanvasAgg
 from StringIO import StringIO
 import matplotlib
 from matplotlib.image import pil_to_array
+from wand.image import Image as WandImage
+from wand.color import Color
+
 
 
 class Pdfer:
@@ -39,7 +42,7 @@ class Pdfer:
     def addImage(self, buffer):
         if not isinstance(buffer, StringIO):
             raise Exception("wrong image instance given")
-        self.images.append(buffer)
+        self.preProcessImage(buffer)
 
     def setSize(self, size):
         self.size = size
@@ -47,50 +50,50 @@ class Pdfer:
     def compress(self):
         processStack = []
         for fileBuffer in self.images:
-            # self.processImage(fileBuffer)
-            process = threading.Thread(target=self.processImage, args=[fileBuffer])
-            process.start()
-            processStack.append(process)
+            self.processImage(fileBuffer)
+            # process = threading.Thread(target=self.processImage, args=[fileBuffer])
+            # process.start()
+            # processStack.append(process)
         for process in processStack:
             process.join()
         return self
 
+    def preProcessImage(self, buffer):
+        with WandImage(blob=buffer.getvalue(), resolution=150) as img_seq:
+            for img in img_seq.sequence:
+                with WandImage(width=img.width, height=img.height, background=Color("white")) as bg:
+                    bg.composite(img,0,0)
+                    blob = bg.make_blob('png')
+                    self.images.append(StringIO(blob))
+
+
     def processImage(self, fileBuffer):
         # tmp_name = uuid.uuid4().__str__() + ".png"
-        # try:
+        try:
 
-        image = Image.open(fileBuffer)
-        image.thumbnail(self.size)
-        converted = image.convert("L")
-        # converted = ImageEnhance.Contrast(converted).enhance(1.1)
-        # converted = ImageEnhance.Brightness(converted).enhance(1.1)
-        converted = ImageEnhance.Sharpness(converted).enhance(1.4)
-        # fileBuffer.close()
+            image = Image.open(fileBuffer)
+            image.thumbnail(self.size)
+            converted = image.convert("L")
+            # converted = ImageEnhance.Contrast(converted).enhance(1.1)
+            # converted = ImageEnhance.Brightness(converted).enhance(1.1)
+            converted = ImageEnhance.Sharpness(converted).enhance(1.4)
 
-        # image = np.array(converted)
-        image = matplotlib.image.pil_to_array(converted)
-        binary_adaptive = threshold_adaptive(image, 40, offset=10)
+            # image = np.array(converted)
+            image = matplotlib.image.pil_to_array(converted)
+            binary_adaptive = threshold_adaptive(image, 40, offset=10)
 
-        figsize = [x / float(self._dpi) for x in (binary_adaptive.shape[1], binary_adaptive.shape[0])]
-        fig = Figure(figsize=figsize, dpi=self._dpi, frameon=False)
-        canvas = FigureCanvasAgg(fig)
-        fig.figimage(binary_adaptive)
+            figsize = [x / float(self._dpi) for x in (binary_adaptive.shape[1], binary_adaptive.shape[0])]
+            fig = Figure(figsize=figsize, dpi=self._dpi, frameon=False)
+            canvas = FigureCanvasAgg(fig)
+            fig.figimage(binary_adaptive)
 
-        output = StringIO()
-        fig.savefig(output, format='png')
-        output.seek(0)
-        #
+            output = StringIO()
+            fig.savefig(output, format='png')
+            output.seek(0)
 
-        # with open(tmp_name, "wb") as file:
-        #     file.write(output.getvalue())
-        #     file.close()
-        # output.close()
-
-
-        self.outfiles.append(output)
-        # except IOError:
-        #     self.invalidFiles.append(fileBuffer)
-        #     pass
+            self.outfiles.append(output)
+        except IOError:
+            self.invalidFiles.append(fileBuffer)
 
     def getPdfBytes(self):
         bytes = img2pdf.convert(self.outfiles)

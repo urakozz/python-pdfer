@@ -8,12 +8,6 @@ __author__ = 'yury'
 
 from django import forms
 from multiupload.fields import MultiFileField
-from django.db import models
-
-
-class ProfileImage(models.Model):
-    image = models.FileField(upload_to='upload/')
-
 
 class UploadForm(forms.Form):
     attachments = MultiFileField(max_num=30, min_num=1, max_file_size=30621440)

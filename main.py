@@ -7,7 +7,8 @@ __author__ = 'yury'
 
 
 def run_pdfer():
-    files = ['Scan_DiplomaRus.jpeg', 'Scan_RefLetter.jpeg', "IMG_2129.JPG"]
+    # files = ['Scan_DiplomaRus.jpeg', 'Scan_RefLetter.jpeg', "IMG_2129.JPG"]
+    files = ["i24-bonitaetscheck.pdf"]
     streams = []
     for file in files:
         stream = StringIO.StringIO()
