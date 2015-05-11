@@ -1,3 +1,5 @@
+from wand.exceptions import MissingDelegateError, WandException
+
 __author__ = 'yury'
 
 import uuid
@@ -59,12 +61,15 @@ class Pdfer:
         return self
 
     def preProcessImage(self, buffer):
-        with WandImage(blob=buffer.getvalue(), resolution=150) as img_seq:
-            for img in img_seq.sequence:
-                with WandImage(width=img.width, height=img.height, background=Color("white")) as bg:
-                    bg.composite(img,0,0)
-                    blob = bg.make_blob('png')
-                    self.images.append(StringIO(blob))
+        try:
+            with WandImage(blob=buffer.getvalue(), resolution=150) as img_seq:
+                for img in img_seq.sequence:
+                    with WandImage(width=img.width, height=img.height, background=Color("white")) as bg:
+                        bg.composite(img,0,0)
+                        blob = bg.make_blob('png')
+                        self.images.append(StringIO(blob))
+        except MissingDelegateError:
+            self.images.append(buffer)
 
 
     def processImage(self, fileBuffer):
