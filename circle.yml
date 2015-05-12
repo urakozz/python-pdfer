@@ -8,6 +8,7 @@ machine:
 dependencies:
   pre:
     - sudo apt-get update
+    - sudo apt-get -y install python-gevent python-numpy python-lxml
     - sudo apt-get -y install cython
     - sudo apt-get -y install libfreetype6-dev liblcms2-dev libwebp-dev tcl8.5-dev tk8.5-dev python-tk 
     - sudo apt-get -y install ghostscript imagemagick libmagickwand5 libmagickcore5 libfftw3-double3 libpng3 libgif-dev libsvga1-dev liblqr-1-0-dev 
