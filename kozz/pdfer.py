@@ -40,6 +40,7 @@ class Pdfer:
         for buffer in images:
             self.addImage(buffer)
         plt.gray()
+        matplotlib.use('Agg')
 
     def addImage(self, buffer):
         if not isinstance(buffer, StringIO):
