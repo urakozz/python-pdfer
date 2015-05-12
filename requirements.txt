@@ -30,3 +30,4 @@ wsgiref==0.1.2
 django-multiupload>=0.2
 waitress==0.8.9
 Wand==0.4.0
+distribute==0.7.3
