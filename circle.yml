@@ -1,5 +1,6 @@
 machine:
-  python: 2.7.6
+  python: 
+    version: 2.7.6
   environment:
     TZ: Europe/Berlin
 
