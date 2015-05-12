@@ -10,7 +10,7 @@ dependencies:
     - sudo apt-get update
     - sudo apt-get -y install cython
     - sudo apt-get -y install libfreetype6-dev liblcms2-dev libwebp-dev tcl8.5-dev tk8.5-dev python-tk 
-    - sudo apt-get -y install ghostscript imagemagick libpng3 libgif-dev libsvga1-dev liblqr-1-0-dev 
+    - sudo apt-get -y install ghostscript imagemagick libmagickwand5 libmagickcore5 libpng3 libgif-dev libsvga1-dev liblqr-1-0-dev 
     - sudo apt-get -y install libblas-dev liblapack-dev gfortran python-scipy
 
 test:
