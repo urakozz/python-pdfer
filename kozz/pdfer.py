@@ -39,8 +39,8 @@ class Pdfer:
         self.outfiles = []
         for buffer in images:
             self.addImage(buffer)
-        plt.gray()
         matplotlib.use('Agg')
+        plt.gray()
 
     def addImage(self, buffer):
         if not isinstance(buffer, StringIO):
