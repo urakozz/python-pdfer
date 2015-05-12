@@ -6,6 +6,8 @@ import uuid
 import os
 import img2pdf
 import threading
+import matplotlib
+matplotlib.use('pdf')
 import matplotlib.pyplot as plt
 
 from PIL import Image
@@ -14,7 +16,6 @@ from skimage.filters import threshold_adaptive
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_agg import FigureCanvasAgg
 from StringIO import StringIO
-import matplotlib
 from matplotlib.image import pil_to_array
 from wand.image import Image as WandImage
 from wand.color import Color
@@ -39,7 +40,7 @@ class Pdfer:
         self.outfiles = []
         for buffer in images:
             self.addImage(buffer)
-        matplotlib.use('Agg')
+        
         plt.gray()
 
     def addImage(self, buffer):
