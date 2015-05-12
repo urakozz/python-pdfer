@@ -1,0 +1,23 @@
+machine:
+  python: 2.7.6
+  environment:
+    TZ: Europe/Berlin
+
+
+dependencies:
+  pre:
+    - sudo apt-get -y install cython libtiff4-dev libjpeg8-dev zlib1g-dev
+    - sudo apt-get -y libfreetype6-dev liblcms2-dev libwebp-dev tcl8.5-dev tk8.5-dev python-tk 
+    - sudo apt-get -y ghostscript imagemagick libpng3 libgif-dev libsvga1-dev liblqr-1-0-dev 
+    - sudo apt-get -y libblas-dev liblapack-dev gfortran python-scipy
+
+test:
+  override:
+    - python ./manage.py collectstatic --noinput
+  post:
+    - ls ~/.ssh/
+    - git config user.name "circleci"
+    - git config user.email "urakozz@circleci.com"
+    - git add -A
+    - git commit -m "build"
+
