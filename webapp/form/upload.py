@@ -10,7 +10,7 @@ from django import forms
 from multiupload.fields import MultiFileField
 
 class UploadForm(forms.Form):
-    attachments = MultiFileField(max_num=30, min_num=1, max_file_size=30621440)
+    attachments = MultiFileField(max_num=30, min_num=1, max_file_size=100621440)
     bufferFiles = []
 
     def save(self):
