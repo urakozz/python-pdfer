@@ -22,5 +22,5 @@ brew install ghostscript imagemagick
 ```
 ```
 sudo pkill gunicorn
-gunicorn pdfer.wsgi --bind 127.0.0.1:8000 --daemon --log-level=debug --log-file=-
+gunicorn pdfer.wsgi --bind 127.0.0.1:8000 --daemon --log-level=debug --log-file=gunicorn.log --timeout=600
 ```
