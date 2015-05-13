@@ -1,6 +1,6 @@
 import uuid
 import sys
-from django.core.files.uploadedfile import InMemoryUploadedFile
+from django.core.files.uploadedfile import InMemoryUploadedFile, UploadedFile
 import os
 from StringIO import StringIO
 
