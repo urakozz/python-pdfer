@@ -22,7 +22,7 @@ class UploadForm(forms.Form):
         return self.bufferFiles
 
     def _handle_uploaded_file(self, f):
-        if not isinstance(f, InMemoryUploadedFile):
+        if not isinstance(f, UploadedFile):
             raise Exception("invalid instance given: " + f.__class__.__name__)
         output = StringIO()
         for chunk in f.chunks():
