@@ -6,41 +6,35 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
 </head>
 <body>
-<h1>Compress your images and PDFs!</h1>
+<div class="container">
+    <h1>Compress your images and PDFs!</h1>
 
-<h2>Binarize your images (make it W/B) and put it to the pdf</h2>
+    <h2>Binarize your images (make it W/B) and put it to the pdf</h2>
 
+    <form method="post" action="/pdfer" enctype="multipart/form-data">
+        {{ form.as_p }}
+        {% csrf_token %}
+        <button type="submit" value="Submit" class="btn btn-primary">Submit</button>
+    </form>
 
-<!--<ul>-->
-
-    <!--{% for greeting in greetings %}-->
-    <!--<li>{{ greeting.when }}</li>-->
-    <!--{% endfor %}-->
-
-<!--</ul>-->
-
-<form method="post" action="/pdfer" enctype="multipart/form-data">
-    {{ form.as_p }}
-    {% csrf_token %}
-    <button type="submit" value="Submit">Submit</button>
-</form>
-
-<h1>Examples:</h1>
-<h3>Image compression:</h3>
-<div>
-    <div>
-        <img src="http://d0deab4daa165f06918b-b6234bbd7a2dc3143ed9581a07152154.r56.cf2.rackcdn.com/IMG_0046.png">
+    <hr>
+    <h2>Examples:</h2>
+    <h3>Image compression:</h3>
+    <div class="row">
+        <div class=>
+            <img src="http://d0deab4daa165f06918b-b6234bbd7a2dc3143ed9581a07152154.r56.cf2.rackcdn.com/IMG_0046.png">
+        </div>
     </div>
-</div>
 
-<h3>Pdf compression</h3>
-<div>
-    <div>
-        <img src="http://d0deab4daa165f06918b-b6234bbd7a2dc3143ed9581a07152154.r56.cf2.rackcdn.com/berliner_platz_1_lehr_und_arbeitsbuch_pdf__page_1_of_267_.png">
-    </div>
-    
-    <div>
-        <img src="http://d0deab4daa165f06918b-b6234bbd7a2dc3143ed9581a07152154.r56.cf2.rackcdn.com/attach_compressed__1__pdf__page_1_of_267_.png">
+    <h3>Pdf compression</h3>
+    <div class="row">
+        <div>
+            <img class="img-thumbnail" src="http://d0deab4daa165f06918b-b6234bbd7a2dc3143ed9581a07152154.r56.cf2.rackcdn.com/berliner_platz_1_lehr_und_arbeitsbuch_pdf__page_1_of_267_.png">
+        </div>
+
+        <div>
+            <img class="img-thumbnail" src="http://d0deab4daa165f06918b-b6234bbd7a2dc3143ed9581a07152154.r56.cf2.rackcdn.com/attach_compressed__1__pdf__page_1_of_267_.png">
+        </div>
     </div>
 </div>
 </body>
