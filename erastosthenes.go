@@ -4,6 +4,10 @@ import (
 	"fmt"
 )
 
+func main(){
+	Erastosthenes(int64(100))	
+}
+
 func Erastosthenes(n int64) ([]int64) {
 	shleve := make([]bool, n+1)
 
@@ -19,8 +23,6 @@ func Erastosthenes(n int64) ([]int64) {
 		}
 	}
 	fmt.Println(len(primes))
-
-
 
 	return primes
 }
