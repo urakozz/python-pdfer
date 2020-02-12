@@ -28,6 +28,6 @@ Django>=1.11.28
 static3==0.5.1
 wsgiref==0.1.2
 django-multiupload>=0.2
-waitress==0.8.9
+waitress>=1.4.2
 Wand==0.4.0
 distribute==0.7.3
